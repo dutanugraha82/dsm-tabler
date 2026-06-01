@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>dsm-firmenich - Control Center</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-datatables@1.6.3/dist/vanilla-dataTables.min.css">
+    <style>
+        /* Layout scrollable alami yang stabil */
+        html,
+        body {
+            min-height: 100%;
+            overflow-y: auto !important;
+            background-color: #f8f9fa;
+            font-size: 12px;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        .page-header {
+            padding: 1rem 0 0.5rem 0 !important;
+        }
+
+        .tab-nav-container {
+            margin-bottom: 1rem;
+        }
+
+        .page-body {
+            padding: 0.5rem 0 !important;
+        }
+
+        .row-spacing {
+            margin-bottom: 1.25rem;
+        }
+
+        /* Wadah grafik dengan tinggi tetap yang sinkron */
+        .chart-box {
+            height: 320px;
+            width: 100%;
+        }
+
+        /* Mengunci tinggi box spidometer agar tidak memicu whitespace hampa */
+        .gauge-box-wrapper {
+            height: 320px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* ========================================================== */
+        /* FIX TEKS NAVBAR TIDAK TERLIHAT: Memaksa text menu muncul   */
+        /* ========================================================== */
+        header .nav-link-title {
+            display: inline-block !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            margin-left: 6px;
+        }
+
+        header .nav-link:hover .nav-link-title,
+        header .nav-item.active .nav-link-title {
+            color: #ffffff !important;
+        }
+
+        /* Kelas utility warna teks untuk data tabel */
+        .text-positive {
+            color: #2fb344 !important;
+            font-weight: 600;
+        }
+
+        .text-negative {
+            color: #d63939 !important;
+            font-weight: 600;
+        }
+
+        .text-neutral {
+            color: #111111 !important;
+            font-weight: normal;
+        }
+
+        .dataTable-top {
+            padding: 0.75rem 1rem 0.5rem 1rem !important;
+        }
+
+        .dataTable-bottom {
+            padding: 0.5rem 1rem 0.75rem 1rem !important;
+        }
+
+        .dataTable-search input {
+            padding: 0.3rem 0.6rem !important;
+            font-size: 0.75rem !important;
+        }
+
+        .table card-table td,
+        .table card-table th,
+        .dataTable-table td,
+        .dataTable-table th {
+            padding: 0.5rem 0.6rem !important;
+            font-size: 0.75rem !important;
+        }
+
+        .dataTable-table th a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Font Utilities */
+        .subheader {
+            font-size: 0.7rem !important;
+            margin-bottom: 4px !important;
+            font-weight: 600;
+        }
+
+        .card-title {
+            font-size: 0.85rem !important;
+            margin-bottom: 0.5rem !important;
+            font-weight: 600;
+        }
+
+        .text-xs {
+            font-size: 0.7rem !important;
+        }
+
+        /* Multi-level dropdown (Submenu) styling */
+        @media (min-width: 768px) {
+            .dropdown-menu .dropend {
+                position: relative;
+            }
+            .dropdown-menu .dropend .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-left: .125rem;
+                margin-top: -6px;
+                display: none;
+            }
+            .dropdown-menu .dropend:hover > .dropdown-menu {
+                display: block;
+            }
+        }
+        
+        /* App View Transitions */
+        .app-view {
+            transition: opacity 0.15s ease-in-out;
+        }
+        .app-view.d-none {
+            display: none !important;
+            opacity: 0;
+        }
+        
+        /* Toast notification styling */
+        .custom-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1055;
+            background-color: #2fb344;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .custom-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .custom-toast.bg-danger {
+            background-color: #d63939;
+        }
+        .custom-toast.bg-info {
+            background-color: #206bc4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <!-- ========================================================== -->
+        <!-- HORIZONTAL NAVBAR (FLUID MODE TANPA TEKS LOGO KIRI)        -->
+        <!-- ========================================================== -->
+        <header class="navbar navbar-expand-md navbar-dark bg-dark d-print-none">
+            <div class="container-fluid px-3">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <div
+                        class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center justify-content-between">
+
+                        <!-- Menu Sisi Kiri: Module, Master Data, & Absensi (Pindahan Baru) -->
+                        <ul class="navbar-nav">
+                            <li class="nav-item active" id="nav-item-analytical">
+                                <a class="nav-link" href="index.html">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 4h6v8h-6z" />
+                                            <path d="M14 4h6v6h-6z" />
+                                            <path d="M4 16h6v4h-6z" />
+                                            <path d="M14 14h6v6h-6z" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Production Analytical</span>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown" id="nav-item-master">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-database" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
+                                            <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
+                                            <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Master Data</span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropend">
+                                        <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                            Master Production
+                                        </a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="prod-items.html">Prod Items</a>
+                                            <a class="dropdown-item" href="prod-entries.html">Prod Entries</a>
+                                            <a class="dropdown-item" href="downtime-entries.html">Downtime Entries</a>
+                                            <a class="dropdown-item" href="volume-budget.html">Volume Budget</a>
+                                            <a class="dropdown-item" href="time-budget.html">Time Budget Actual</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item" id="nav-item-absensi">
+                                <a class="nav-link" href="absensi.html">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-user-check" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                                            <path d="M15 19l2 2l4 -4" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Absensi</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Menu Sisi Kanan: Profile murni sendirian di paling kanan -->
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-profile" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-user-circle" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.832 2.849" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Profile</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">My Profile</a>
+                                    <a class="dropdown-item" href="#">Settings</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger" href="#">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-wrapper">
+            <!-- Control Panel Top (MENGGUNAKAN CONTAINER-FLUID AGAR LEBAR PENUH & HEAD DI TENGAH) -->
+            <div class="page-header">
+                <div class="container-fluid px-3">
+                    <div class="row align-items-center g-2">
+                        <!-- Sisi Kiri dibuat kosong agar judul tengah seimbang -->
+                        <div class="col-xl-4 col-md-12 order-2 order-xl-1"></div>
+
+                        <!-- SOLUSI: Teks Diubah Menjadi DSM Firmenich & Ditempatkan Tepat di Tengah Halaman -->
+                        <div class="col-xl-4 col-md-12 text-center order-1 order-xl-2 py-2 py-xl-0">
+                            <h1 class="mb-0 text-dark font-weight-bold"
+                                style="font-size: 1.6rem; letter-spacing: 0.5px;">DSM Firmenich</h1>
+                        </div>
+
+                        <!-- Date Picker Tetap di Sisi Kanan -->
+                        <div
+                            class="col-xl-4 col-md-12 d-flex flex-wrap justify-content-center justify-content-xl-end align-items-center gap-2 order-3">
+                            <div class="d-flex align-items-center gap-1">
+                                <div class="input-icon">
+                                    <span class="input-icon-text"
+                                        style="font-size: 11px; font-weight: 600;">Start:</span>
+                                    <input type="date" class="form-control form-control-sm"
+                                        style="padding-left: 3.4rem; width: 135px;" id="start-date" value="2025-01-01"
+                                        onchange="handleDateRangeChange()">
+                                </div>
+                                <div class="input-icon">
+                                    <span class="input-icon-text" style="font-size: 11px; font-weight: 600;">End:</span>
+                                    <input type="date" class="form-control form-control-sm"
+                                        style="padding-left: 3.1rem; width: 135px;" id="end-date" value="2025-03-31"
+                                        onchange="handleDateRangeChange()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation (Fluid Area) -->
+            <div class="container-fluid px-3 tab-nav-container">
+                <ul class="nav nav-tabs nav-tabs-alt" data-bs-toggle="tabs">
+                    <li class="nav-item">
+                        <a href="#dashboard1" class="nav-link active" data-bs-toggle="tab">Dashboard 1: Volume &
+                            Yield</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#dashboard2" class="nav-link" data-bs-toggle="tab"
+                            onclick="renderDashboard2Charts()">Dashboard 2: Waktu & Downtime</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Main Workspace Area (Fluid Layout Tanpa Margin Lebar Kanan Kiri) -->
+            <div class="page-body">
+                <div class="container-fluid px-3">
+                    <div class="tab-content">
+
+                        <!-- ========================================== -->
+                        <!-- DASHBOARD 1: VOLUME, YIELD, & TONALITY    -->
+                        <!-- ========================================== -->
+                        <div class="tab-pane fade show active" id="dashboard1">
+
+                            <!-- Baris 1: KPI Cards Area -->
+                            <div class="row g-3 row-cards row-spacing">
+                                <div class="col-md-3">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-danger flex-fill">
+                                            <div class="subheader text-danger">Card A: Qty (act)</div>
+                                            <div class="h1 m-0 font-weight-bold" id="kpi-qty-act">54,250 kg</div>
+                                            <div class="text-xs text-muted">Vs Bud: <span
+                                                    class="text-danger">93.5%</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-success flex-fill">
+                                            <div class="subheader text-success">Card B: Yield (%)</div>
+                                            <div class="h1 m-0 font-weight-bold" id="kpi-yield-pct">91.80 %</div>
+                                            <div class="text-xs text-muted">Target: <span
+                                                    class="text-success">91.0%</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-success flex-fill">
+                                            <div class="subheader text-success">Card C: Process Order (PrO)</div>
+                                            <div class="h1 m-0 font-weight-bold" id="kpi-pro-count">32 Orders</div>
+                                            <div class="text-xs text-muted">Vs Prev: <span
+                                                    class="text-success">+14.2%</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-danger flex-fill">
+                                            <div class="subheader text-danger">Card D: CIP Cleaning</div>
+                                            <div class="h1 m-0 font-weight-bold" id="kpi-cip-hours">14.5 hrs</div>
+                                            <div class="text-xs text-muted">Vs Prev: <span
+                                                    class="text-danger">+16.9%</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Baris 2: Yield Trend & SPEEDOMETER GAUGE -->
+                            <div class="row g-3 row-spacing items-push">
+                                <div class="col-md-7">
+                                    <div class="card h-100 d-flex flex-column">
+                                        <div class="card-body flex-fill">
+                                            <h4 class="card-title">Graph Yield / Month / Yield (vs Target 91%)</h4>
+                                            <div id="chart-yield-trend" class="chart-box"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="card h-100 d-flex flex-column">
+                                        <div class="card-body flex-fill d-flex flex-column">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div>
+                                                    <h4 class="card-title m-0">Graph Speed Act by Tonality</h4>
+                                                    <p class="text-muted text-xs m-0">Rata-rata kecepatan pengemasan
+                                                        mesin.</p>
+                                                </div>
+                                                <select class="form-select form-select-sm w-auto"
+                                                    style="font-size: 11px;" onchange="updateGaugeSpeed(this.value)">
+                                                    <option value="Citrus">Citrus</option>
+                                                    <option value="Berries">Berries</option>
+                                                    <option value="Tropical">Tropical</option>
+                                                </select>
+                                            </div>
+                                            <div class="gauge-box-wrapper flex-fill">
+                                                <div id="chart-speed-gauge" style="width: 100%; max-width: 360px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Baris 3: BAR CHART TONALITY -->
+                            <div class="row g-3 row-spacing">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Graph Act Qty (Vol) and PrO per Tonality</h4>
+                                            <div id="chart-qty-tonality" class="chart-box"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Baris 4: DataTables Area -->
+                            <div class="row g-3">
+                                <div class="col-md-7">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <table id="table-volume-breakdown"
+                                                class="table card-table table-vcenter text-nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Month/Wk</th>
+                                                        <th>Budget</th>
+                                                        <th>Expt</th>
+                                                        <th>Act</th>
+                                                        <th>Vs Target</th>
+                                                        <th>Yield (%)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>2025 Wk 01</td>
+                                                        <td>20,000</td>
+                                                        <td>18,000</td>
+                                                        <td>19,175</td>
+                                                        <td>-825</td>
+                                                        <td>91.7%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2025 Wk 02</td>
+                                                        <td>38,000</td>
+                                                        <td>34,500</td>
+                                                        <td>35,075</td>
+                                                        <td>-2,925</td>
+                                                        <td>91.9%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2025 Wk 03</td>
+                                                        <td>25,000</td>
+                                                        <td>23,000</td>
+                                                        <td>25,000</td>
+                                                        <td>0</td>
+                                                        <td>91.2%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2025 Wk 04</td>
+                                                        <td>20,000</td>
+                                                        <td>21,000</td>
+                                                        <td>21,500</td>
+                                                        <td>+1,500</td>
+                                                        <td>92.4%</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <table id="table-tonality-perf"
+                                                class="table card-table table-vcenter text-nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tonality</th>
+                                                        <th>Qty Act</th>
+                                                        <th>PrO Count</th>
+                                                        <th>Avg Speed</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Citrus</td>
+                                                        <td>32,450</td>
+                                                        <td>18 Orders</td>
+                                                        <td>669.8 kg/hr</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Berries</td>
+                                                        <td>12,800</td>
+                                                        <td>8 Orders</td>
+                                                        <td>647.5 kg/hr</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tropical</td>
+                                                        <td>9,000</td>
+                                                        <td>6 Orders</td>
+                                                        <td>588.0 kg/hr</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Bakery and Cereals</td>
+                                                        <td>4,500</td>
+                                                        <td>3 Orders</td>
+                                                        <td>528.8 kg/hr</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- ========================================== -->
+                        <!-- DASHBOARD 2: TIME MANAGEMENT & DOWNTIME    -->
+                        <!-- ========================================== -->
+                        <div class="tab-pane fade" id="dashboard2">
+
+                            <!-- Baris 1: KPI Cards Area -->
+                            <div class="row g-2 row-cards row-spacing">
+                                <div class="col-md-2">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-dark flex-fill">
+                                            <div class="subheader text-dark">Budget Time</div>
+                                            <div class="h2 m-0 font-weight-bold">720.0 hrs</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-success flex-fill">
+                                            <div class="subheader text-success">Act Time</div>
+                                            <div class="h2 m-0 font-weight-bold">680.5 hrs</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-success flex-fill">
+                                            <div class="subheader text-success">Uptime</div>
+                                            <div class="h2 m-0 font-weight-bold">522.0 hrs</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-danger flex-fill">
+                                            <div class="subheader text-danger">Plan DT</div>
+                                            <div class="h2 m-0 font-weight-bold">98.5 hrs</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-danger flex-fill">
+                                            <div class="subheader text-danger">Unplan DT</div>
+                                            <div class="h2 m-0 font-weight-bold">36.0 hrs</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card card-sm h-100 d-flex flex-column">
+                                        <div class="card-body p-3 text-dark flex-fill">
+                                            <div class="subheader text-dark">Idle Time</div>
+                                            <div class="h2 m-0 font-weight-bold">24.0 hrs</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Middle Dashboard 2 -->
+                            <div class="row g-3 row-spacing">
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Graph: Production Volume Qty vs Downtime Hours</h4>
+                                            <div id="chart-vol-vs-dt" class="chart-box"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Graph Viability Time vs DT Proportion</h4>
+                                            <div id="chart-time-proportion" class="chart-box"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Table Bottom Dashboard 2 -->
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <table id="table-time-breakdown"
+                                                class="table card-table table-vcenter text-nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Month/Wk</th>
+                                                        <th>Budget Wk</th>
+                                                        <th>Act Time</th>
+                                                        <th>Uptime (hrs)</th>
+                                                        <th>Plan DT</th>
+                                                        <th>Unplan DT</th>
+                                                        <th>Idle Time</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>2025 Wk 01</td>
+                                                        <td>168.0</td>
+                                                        <td>160.0</td>
+                                                        <td>122.5</td>
+                                                        <td>24.0</td>
+                                                        <td>8.5</td>
+                                                        <td>5.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2025 Wk 02</td>
+                                                        <td>168.0</td>
+                                                        <td>168.0</td>
+                                                        <td>131.0</td>
+                                                        <td>22.0</td>
+                                                        <td>10.0</td>
+                                                        <td>5.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2025 Wk 03</td>
+                                                        <td>168.0</td>
+                                                        <td>155.0</td>
+                                                        <td>110.0</td>
+                                                        <td>30.0</td>
+                                                        <td>12.0</td>
+                                                        <td>3.0</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+            </div>
+        </div> <!-- End of page-wrapper -->
+    </div> <!-- End of page -->
+
+    <!-- Custom Notification Toast -->
+    <div id="app-toast" class="custom-toast">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+            <path d="M9 12l2 2l4 -4"></path>
+        </svg>
+        <span id="toast-message">Success!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@1.6.3/dist/vanilla-dataTables.min.js"></script>
+
+    <script>
+        // LOGIKA PEWARNAAN DINAMIS DATA TABLES
+        function applyColorCoding(row) {
+            const cell = row.cells[4];
+            if (cell) {
+                const valText = cell.textContent.trim();
+                if (valText.startsWith('-')) {
+                    cell.className = 'text-negative';
+                } else if (valText.startsWith('+') || (parseFloat(valText.replace(/,/g, '')) > 0)) {
+                    cell.className = 'text-positive';
+                } else {
+                    cell.className = 'text-neutral';
+                }
+            }
+        }
+
+        const dtOptions = { perPage: 5, perPageSelect: false, layout: { top: "{search}", bottom: "{info}" } };
+        const dt1 = new DataTable("#table-volume-breakdown", dtOptions);
+        const dt2 = new DataTable("#table-tonality-perf", dtOptions);
+        let dt3;
+
+        dt1.on("datatable.init", () => { dt1.rows().forEach(applyColorCoding); });
+        dt1.on("datatable.page", () => { dt1.rows().forEach(applyColorCoding); });
+        dt1.on("datatable.sort", () => { dt1.rows().forEach(applyColorCoding); });
+        dt1.on("datatable.search", () => { dt1.rows().forEach(applyColorCoding); });
+
+        // LOGIKA INTERAKTIF DATE RANGE PICKER
+        function handleDateRangeChange() {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            if (startDate && endDate) {
+                document.getElementById('kpi-qty-act').innerText = "142,800 kg";
+                document.getElementById('kpi-yield-pct').innerText = "92.15 %";
+                document.getElementById('kpi-pro-count').innerText = "84 Orders";
+                document.getElementById('kpi-cip-hours').innerText = "41.2 hrs";
+
+                yieldChart.updateSeries([
+                    { name: 'Actual Yield (%)', data: [90.5, 92.3, 91.8, 92.5, 93.1] },
+                    { name: 'Target Limit', data: [91.0, 91.0, 91.0, 91.0] }
+                ]);
+            }
+        }
+
+        const axisLabelStyle = { style: { fontSize: '10px', fontWeight: 500 } };
+
+        // 1. Chart Yield Trend
+        var yieldChart = new ApexCharts(document.querySelector("#chart-yield-trend"), {
+            series: [
+                { name: 'Actual Yield (%)', type: 'line', data: [91.7, 91.9, 91.5, 92.1, 91.8] },
+                { name: 'Target Limit', type: 'line', data: [91.0, 91.0, 91.0, 91.0] }
+            ],
+            chart: { height: 320, type: 'line', toolbar: { show: false } },
+            stroke: { width: [3, 1.5], dashArray: [0, 4], curve: 'smooth' },
+            colors: ['#206bc4', '#ff4560'],
+            grid: { padding: { top: 10, right: 10, bottom: 25, left: 15 } },
+            xaxis: { categories: ['2025 Wk 01', '2025 Wk 02', '2025 Wk 03', '2025 Wk 04', '2025 Wk 05'], labels: axisLabelStyle },
+            yaxis: { min: 88, max: 95, labels: axisLabelStyle },
+            legend: { position: 'top', fontSize: '11px' }
+        });
+        yieldChart.render();
+
+        // 2. Chart Vol per Tonality
+        var qtyChart = new ApexCharts(document.querySelector("#chart-qty-tonality"), {
+            series: [
+                { name: 'Volume Qty (kg)', type: 'column', data: [32450, 12800, 9000, 5400, 4100, 3200, 2900] },
+                { name: 'PrO Count', type: 'line', data: [18, 8, 6, 3, 2, 2, 1] }
+            ],
+            chart: { height: 320, type: 'line', toolbar: { show: false } },
+            stroke: { width: [0, 2] },
+            colors: ['#4299e1', '#f59e0b'],
+            grid: { padding: { top: 10, right: 20, bottom: 25, left: 20 } },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        position: 'top'
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                enabledOnSeries: [0],
+                offsetY: -20,
+                style: {
+                    fontSize: '9px',
+                    fontWeight: 600,
+                    colors: ['#303030']
+                },
+                formatter: function (val) {
+                    return val.toLocaleString() + " kg";
+                }
+            },
+            xaxis: {
+                categories: ['Citrus Rumpun', 'Berries Fruit', 'Tropical Blend', 'Bakery and Cereals', 'Brown Note Choice', 'Fantasy Note Mix', 'Herbs & Leaf'],
+                labels: { style: { fontSize: '10px' }, hideOverlappingLabels: false }
+            },
+            yaxis: [
+                { title: { text: 'Vol (kg)', style: { fontSize: '10px' } }, labels: axisLabelStyle },
+                { opposite: true, title: { text: 'Orders', style: { fontSize: '10px' } }, labels: axisLabelStyle }
+            ],
+            legend: { position: 'top', fontSize: '11px' }
+        });
+        qtyChart.render();
+
+        // 3. Chart Speed Gauge
+        var speedChart = new ApexCharts(document.querySelector("#chart-speed-gauge"), {
+            chart: { type: 'radialBar', height: 380, sparkline: { enabled: false } },
+            series: [55.8],
+            grid: { padding: { top: -10, bottom: -20, left: 0, right: 0 } },
+            plotOptions: {
+                radialBar: {
+                    startAngle: -90, endAngle: 90, offsetY: 55,
+                    hollow: { size: '65%' },
+                    track: { background: "#e7e7e7", strokeWidth: '100%', margin: 0 },
+                    dataLabels: {
+                        name: { show: true, fontSize: '12px', color: '#6c757d', offsetY: -10 },
+                        value: { offsetY: -42, fontSize: '24px', fontWeight: 'bold', color: '#111', formatter: function () { return "669.8 kg/hr"; } }
+                    }
+                }
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark', type: 'horizontal', shadeIntensity: 0.1,
+                    colorStops: [{ offset: 0, color: '#FF4560', opacity: 1 }, { offset: 65, color: '#FFE000', opacity: 1 }, { offset: 100, color: '#00E396', opacity: 1 }]
+                }
+            },
+            labels: ['Speed Rate (Citrus)'],
+        });
+        speedChart.render();
+
+        function updateGaugeSpeed(tonalityName) {
+            let dummy = { 'Citrus': { pct: 55.8, txt: "669.8 kg/hr" }, 'Berries': { pct: 53.9, txt: "647.5 kg/hr" }, 'Tropical': { pct: 49.0, txt: "588.0 kg/hr" } };
+            let sel = dummy[tonalityName] || dummy['Citrus'];
+            speedChart.updateOptions({
+                series: [sel.pct],
+                plotOptions: { radialBar: { dataLabels: { value: { formatter: function () { return sel.txt; } } } } },
+                labels: ['Speed Rate (' + tonalityName + ')']
+            });
+        }
+
+        // ==========================================
+        // CHARTS GENERATOR FOR DASHBOARD 2
+        // ==========================================
+        var isD2Rendered = false;
+        function renderDashboard2Charts() {
+            if (!dt3) dt3 = new DataTable("#table-time-breakdown", dtOptions);
+            if (isD2Rendered) return;
+
+            setTimeout(function () {
+                var volVsDtChart = new ApexCharts(document.querySelector("#chart-vol-vs-dt"), {
+                    series: [
+                        { name: 'Production Volume (kg)', type: 'area', data: [19175, 35075, 22000, 28500] },
+                        { name: 'Total Downtime (hrs)', type: 'line', data: [32.5, 32.0, 41.0, 29.5] }
+                    ],
+                    chart: { height: 320, type: 'line', toolbar: { show: false } },
+                    stroke: { width: [0, 2], curve: 'smooth' },
+                    colors: ['#b3e5fc', '#d63939'],
+                    fill: { opacity: [0.5, 1] },
+                    grid: { padding: { top: 10, right: 10, bottom: 25, left: 15 } },
+                    xaxis: { categories: ['2025 Wk 01', '2025 Wk 02', '2025 Wk 03', '2025 Wk 04'], labels: axisLabelStyle },
+                    yaxis: [{ title: { text: 'Vol (kg)', style: { fontSize: '10px' } }, labels: axisLabelStyle }, { opposite: true, title: { text: 'Downtime (hrs)', style: { fontSize: '10px' } }, labels: axisLabelStyle }],
+                    legend: { position: 'top', fontSize: '11px' }
+                });
+                volVsDtChart.render();
+
+                var proportionChart = new ApexCharts(document.querySelector("#chart-time-proportion"), {
+                    series: [522, 98.5, 36, 24],
+                    chart: { height: 320, type: 'donut' },
+                    labels: ['Uptime', 'Planned DT', 'Unplanned DT', 'Idle'],
+                    colors: ['#2fb344', '#f59e0b', '#d63939', '#6f42c1'],
+                    legend: { position: 'bottom', fontSize: '10px' },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function (val, opts) {
+                            return val.toFixed(1) + "%";
+                        },
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'bold',
+                            colors: ['#fff']
+                        },
+                        dropShadow: {
+                            enabled: true
+                        }
+                    }
+                });
+                proportionChart.render();
+                isD2Rendered = true;
+            }, 100);
+        }
+    </script>
+</body>
+
+</html>

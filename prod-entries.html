@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>dsm-firmenich - Prod Entries</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-datatables@1.6.3/dist/vanilla-dataTables.min.css">
+    <style>
+        html,
+        body {
+            min-height: 100%;
+            overflow-y: auto !important;
+            background-color: #f8f9fa;
+            font-size: 12px;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        .page-header {
+            padding: 1.5rem 0 1rem 0 !important;
+        }
+
+        @media (min-width: 768px) {
+            .dropdown-menu .dropend {
+                position: relative;
+            }
+            .dropdown-menu .dropend .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-left: .125rem;
+                margin-top: -6px;
+                display: none;
+            }
+            .dropdown-menu .dropend:hover > .dropdown-menu {
+                display: block;
+            }
+        }
+        
+        .card-title {
+            font-size: 0.85rem !important;
+            margin-bottom: 0.5rem !important;
+            font-weight: 600;
+        }
+
+        .text-xs {
+            font-size: 0.7rem !important;
+        }
+
+        /* ========================================================== */
+        /* FIX TEKS NAVBAR TIDAK TERLIHAT: Memaksa text menu muncul   */
+        /* ========================================================== */
+        header .nav-link-title {
+            display: inline-block !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            margin-left: 6px;
+        }
+
+        header .nav-link:hover .nav-link-title,
+        header .nav-item.active .nav-link-title {
+            color: #ffffff !important;
+        }
+
+        .custom-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1055;
+            background-color: #2fb344;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .custom-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .custom-toast.bg-danger {
+            background-color: #d63939;
+        }
+        .custom-toast.bg-info {
+            background-color: #206bc4;
+        }
+        
+        /* Custom styles for Vanilla DataTables */
+        .dataTable-top {
+            padding: 0.75rem 1rem 0.5rem 1rem !important;
+        }
+
+        .dataTable-bottom {
+            padding: 0.5rem 1rem 0.75rem 1rem !important;
+        }
+
+        .dataTable-search input {
+            padding: 0.3rem 0.6rem !important;
+            font-size: 0.75rem !important;
+        }
+
+        .table card-table td,
+        .table card-table th,
+        .dataTable-table td,
+        .dataTable-table th {
+            padding: 0.5rem 0.6rem !important;
+            font-size: 0.75rem !important;
+        }
+
+        .dataTable-table th a {
+            color: inherit;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <!-- NAVBAR -->
+        <header class="navbar navbar-expand-md navbar-dark bg-dark d-print-none">
+            <div class="container-fluid px-3">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center justify-content-between">
+                        <ul class="navbar-nav">
+                            <li class="nav-item" id="nav-item-analytical">
+                                <a class="nav-link" href="index.html">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 4h6v8h-6z" />
+                                            <path d="M14 4h6v6h-6z" />
+                                            <path d="M4 16h6v4h-6z" />
+                                            <path d="M14 14h6v6h-6z" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Production Analytical</span>
+                                </a>
+                            </li>
+                            <li class="nav-item active dropdown" id="nav-item-master">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-database" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
+                                            <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
+                                            <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Master Data</span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropend">
+                                        <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                            Master Production
+                                        </a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="prod-items.html">Prod Items</a>
+                                            <a class="dropdown-item active" href="prod-entries.html">Prod Entries</a>
+                                            <a class="dropdown-item" href="downtime-entries.html">Downtime Entries</a>
+                                            <a class="dropdown-item" href="volume-budget.html">Volume Budget</a>
+                                            <a class="dropdown-item" href="time-budget.html">Time Budget Actual</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item" id="nav-item-absensi">
+                                <a class="nav-link" href="absensi.html">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-user-check" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                                            <path d="M15 19l2 2l4 -4" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Absensi</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Menu Sisi Kanan: Profile murni sendirian di paling kanan -->
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-profile" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-user-circle" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.832 2.849" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Profile</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">My Profile</a>
+                                    <a class="dropdown-item" href="#">Settings</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger" href="#">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-wrapper">
+            <div class="page-header d-print-none">
+                <div class="container-fluid px-3">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h2 class="page-title text-dark font-weight-bold" style="font-size: 1.4rem; letter-spacing: 0.3px;">Master Production: Prod Entries</h2>
+                            <div class="text-muted text-xs mt-1">Catatan riwayat hasil realisasi kuantitas produksi (Process Order).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="page-body">
+                <div class="container-fluid px-3">
+                    <div class="card shadow-sm">
+                        <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3 py-2 bg-white">
+                            <h3 class="card-title text-muted m-0">Prod Entries Ledger</h3>
+                            <div class="d-flex align-items-center gap-2">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="triggerUpload('prod-entries')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-upload" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 9l5 -5l5 5" /><path d="M12 4v12" /></svg>
+                                    Upload Excel
+                                </button>
+                                <input type="file" id="upload-prod-entries" class="d-none" onchange="handleMockUpload(this, 'table-prod-entries', 'Prod Entries')">
+                                
+                                <button class="btn btn-sm btn-outline-secondary" onclick="downloadTemplate('prod-entries', ['Entry ID', 'PrO Number', 'Item Code', 'Item Name', 'Qty Act', 'Qty Target', 'Yield', 'Date'])">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M12 17v-6" /><path d="M9.5 14.5l2.5 2.5l2.5 -2.5" /></svg>
+                                    Download Template
+                                </button>
+                                
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                        Export Data
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item" href="javascript:void(0)" onclick="exportToCSV('table-prod-entries', 'prod_entries.csv')">Export to CSV</a>
+                                        <a class="dropdown-item" href="javascript:void(0)" onclick="exportToExcelMock('table-prod-entries', 'prod_entries.xlsx')">Export to Excel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table id="table-prod-entries" class="table card-table table-vcenter text-nowrap table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Entry ID</th>
+                                            <th>PrO Number</th>
+                                            <th>Item Code</th>
+                                            <th>Item Name</th>
+                                            <th>Qty Act (kg)</th>
+                                            <th>Qty Target (kg)</th>
+                                            <th>Yield (%)</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>ENT-001</td>
+                                            <td>1029381</td>
+                                            <td>P001</td>
+                                            <td>Citrus Orange Special</td>
+                                            <td>12,450</td>
+                                            <td>12,500</td>
+                                            <td>99.6%</td>
+                                            <td>2025-01-10</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ENT-002</td>
+                                            <td>1029382</td>
+                                            <td>P002</td>
+                                            <td>Strawberry Sweet Note</td>
+                                            <td>4,800</td>
+                                            <td>5,000</td>
+                                            <td>96.0%</td>
+                                            <td>2025-01-12</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ENT-003</td>
+                                            <td>1029383</td>
+                                            <td>P003</td>
+                                            <td>Mango Tropical Blend</td>
+                                            <td>9,000</td>
+                                            <td>9,100</td>
+                                            <td>98.9%</td>
+                                            <td>2025-01-15</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ENT-004</td>
+                                            <td>1029384</td>
+                                            <td>P005</td>
+                                            <td>Brown Chocolate Fudge</td>
+                                            <td>4,500</td>
+                                            <td>4,700</td>
+                                            <td>95.7%</td>
+                                            <td>2025-01-18</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="app-toast" class="custom-toast">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+            <path d="M9 12l2 2l4 -4"></path>
+        </svg>
+        <span id="toast-message">Success!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@1.6.3/dist/vanilla-dataTables.min.js"></script>
+
+    <script>
+        let dataTableInstance;
+        const tableId = 'table-prod-entries';
+
+        function exportToCSV(targetTableId, filename) {
+            const table = document.getElementById(targetTableId);
+            if (!table) return;
+            
+            let csv = [];
+            const headers = Array.from(table.querySelectorAll("thead th")).map(th => {
+                return '"' + th.innerText.trim().replace(/"/g, '""') + '"';
+            });
+            csv.push(headers.join(","));
+            
+            const rows = table.querySelectorAll("tbody tr");
+            rows.forEach(tr => {
+                const rowData = Array.from(tr.querySelectorAll("td")).map(td => {
+                    let text = td.innerText.trim();
+                    text = text.replace(/"/g, '""');
+                    return '"' + text + '"';
+                });
+                csv.push(rowData.join(","));
+            });
+            
+            const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + csv.join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename || "export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast("Berhasil mengekspor data ke " + filename, "info");
+        }
+
+        function exportToExcelMock(targetTableId, filename) {
+            exportToCSV(targetTableId, filename);
+        }
+
+        function downloadTemplate(subId, headers) {
+            let csv = [headers.map(h => `"${h}"`).join(",")];
+            csv.push('"ENT-005","1029385","P001","Citrus Orange Special","15,000","15,000","100.0%","2026-06-01"');
+            
+            const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + csv.join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `template_${subId}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast("Berhasil mengunduh template: template_" + subId + ".csv", "success");
+        }
+
+        function triggerUpload(subId) {
+            document.getElementById('upload-' + subId).click();
+        }
+
+        function handleMockUpload(input, targetTableId, pageName) {
+            if (!input.files || input.files.length === 0) return;
+            const fileName = input.files[0].name;
+            
+            showToast(`Membaca file "${fileName}"...`, "info");
+            
+            setTimeout(() => {
+                const tableBody = document.querySelector('#' + targetTableId + ' tbody');
+                if (!tableBody) return;
+                
+                let newRowHtml = `
+                    <tr>
+                        <td>ENT-005</td>
+                        <td>1029385</td>
+                        <td>P003</td>
+                        <td>Mango Tropical Blend</td>
+                        <td>10,500</td>
+                        <td>10,000</td>
+                        <td>105.0%</td>
+                        <td>2025-01-22</td>
+                    </tr>
+                `;
+                
+                if (dataTableInstance) {
+                    dataTableInstance.destroy();
+                }
+                
+                tableBody.insertAdjacentHTML('beforeend', newRowHtml);
+                
+                dataTableInstance = new DataTable('#' + targetTableId, {
+                    perPage: 5,
+                    perPageSelect: false,
+                    layout: { top: "{search}", bottom: "{info}" }
+                });
+                
+                showToast(`File "${fileName}" berhasil diunggah! Data simulasi telah ditambahkan ke tabel.`, "success");
+                input.value = '';
+            }, 1200);
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('app-toast');
+            const messageSpan = document.getElementById('toast-message');
+            messageSpan.innerText = message;
+            
+            toast.className = 'custom-toast';
+            if (type === 'danger') {
+                toast.classList.add('bg-danger');
+            } else if (type === 'info') {
+                toast.classList.add('bg-info');
+            }
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            dataTableInstance = new DataTable('#' + tableId, {
+                perPage: 5,
+                perPageSelect: false,
+                layout: { top: "{search}", bottom: "{info}" }
+            });
+        });
+    </script>
+</body>
+
+</html>
