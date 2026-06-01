@@ -1,345 +1,341 @@
-<!doctype html>
+<!DOCTYPE html>
+
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v5.5.0
+* @link https://coreui.io/product/free-bootstrap-admin-template/
+* Copyright (c) 2026 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://github.com/coreui/coreui-free-bootstrap-admin-template/blob/main/LICENSE)
+-->
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>dsm-firmenich - Volume Budget</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/css/tabler.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-datatables@1.6.3/dist/vanilla-dataTables.min.css">
-    <style>
-        html,
-        body {
-            min-height: 100%;
-            overflow-y: auto !important;
-            background-color: #f8f9fa;
-            font-size: 12px;
-        }
-
-        .page-wrapper {
-            min-height: 100vh;
-            padding-bottom: 2rem;
-        }
-
-        .page-header {
-            padding: 1.5rem 0 1rem 0 !important;
-        }
-
-        @media (min-width: 768px) {
-            .dropdown-menu .dropend {
-                position: relative;
-            }
-            .dropdown-menu .dropend .dropdown-menu {
-                top: 0;
-                left: 100%;
-                margin-left: .125rem;
-                margin-top: -6px;
-                display: none;
-            }
-            .dropdown-menu .dropend:hover > .dropdown-menu {
-                display: block;
-            }
-        }
-        
-        .card-title {
-            font-size: 0.85rem !important;
-            margin-bottom: 0.5rem !important;
-            font-weight: 600;
-        }
-
-        .text-xs {
-            font-size: 0.7rem !important;
-        }
-
-        /* ========================================================== */
-        /* FIX TEKS NAVBAR TIDAK TERLIHAT: Memaksa text menu muncul   */
-        /* ========================================================== */
-        header .nav-link-title {
-            display: inline-block !important;
-            color: rgba(255, 255, 255, 0.85) !important;
-            font-weight: 500;
-            margin-left: 6px;
-        }
-
-        header .nav-link:hover .nav-link-title,
-        header .nav-item.active .nav-link-title {
-            color: #ffffff !important;
-        }
-
-        .custom-toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1055;
-            background-color: #2fb344;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            pointer-events: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .custom-toast.show {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-        .custom-toast.bg-danger {
-            background-color: #d63939;
-        }
-        .custom-toast.bg-info {
-            background-color: #206bc4;
-        }
-        
-        /* Custom styles for Vanilla DataTables */
-        .dataTable-top {
-            padding: 0.75rem 1rem 0.5rem 1rem !important;
-        }
-
-        .dataTable-bottom {
-            padding: 0.5rem 1rem 0.75rem 1rem !important;
-        }
-
-        .dataTable-search input {
-            padding: 0.3rem 0.6rem !important;
-            font-size: 0.75rem !important;
-        }
-
-        .table card-table td,
-        .table card-table th,
-        .dataTable-table td,
-        .dataTable-table th {
-            padding: 0.5rem 0.6rem !important;
-            font-size: 0.75rem !important;
-        }
-
-        .dataTable-table th a {
-            color: inherit;
-            text-decoration: none;
-        }
-    </style>
+<base href="./"/>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
+<meta content="CoreUI - Open Source Bootstrap Admin Template" name="description"/>
+<meta content="Łukasz Holeczek" name="author"/>
+<meta content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard" name="keyword"/>
+<title>DSM-FIRMENICH - CONTROL CENTER</title>
+<link href="assets/favicon/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57"/>
+<link href="assets/favicon/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60"/>
+<link href="assets/favicon/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72"/>
+<link href="assets/favicon/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76"/>
+<link href="assets/favicon/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114"/>
+<link href="assets/favicon/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120"/>
+<link href="assets/favicon/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144"/>
+<link href="assets/favicon/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152"/>
+<link href="assets/favicon/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="assets/favicon/android-icon-192x192.png" rel="icon" sizes="192x192" type="image/png"/>
+<link href="assets/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="assets/favicon/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>
+<link href="assets/favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="assets/favicon/manifest.json" rel="manifest"/>
+<meta content="#ffffff" name="msapplication-TileColor"/>
+<meta content="assets/favicon/ms-icon-144x144.png" name="msapplication-TileImage"/>
+<meta content="#ffffff" name="theme-color"/>
+<!-- Vendors styles-->
+<link href="vendors/simplebar/css/simplebar.css" rel="stylesheet"/>
+<link href="css/vendors/simplebar.css" rel="stylesheet"/>
+<!-- Main styles for this application-->
+<link href="css/style.css" rel="stylesheet"/>
+<!-- We use those styles to show code examples, you should remove them in your application.-->
+<link href="css/examples.css" rel="stylesheet"/>
+<script src="js/config.js"></script>
+<script src="js/color-modes.js"></script>
 </head>
-
 <body>
-    <div class="page">
-        <!-- NAVBAR -->
-        <header class="navbar navbar-expand-md navbar-dark bg-dark d-print-none">
-            <div class="container-fluid px-3">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbar-menu">
-                    <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center justify-content-between">
-                        <ul class="navbar-nav">
-                            <li class="nav-item" id="nav-item-analytical">
-                                <a class="nav-link" href="index.html">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 4h6v8h-6z" />
-                                            <path d="M14 4h6v6h-6z" />
-                                            <path d="M4 16h6v4h-6z" />
-                                            <path d="M14 14h6v6h-6z" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">Production Analytical</span>
-                                </a>
-                            </li>
-                            <li class="nav-item active dropdown" id="nav-item-master">
-                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-database" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
-                                            <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
-                                            <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">Master Data</span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <div class="dropend">
-                                        <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                            Master Production
-                                        </a>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="prod-items.html">Prod Items</a>
-                                            <a class="dropdown-item" href="prod-entries.html">Prod Entries</a>
-                                            <a class="dropdown-item" href="downtime-entries.html">Downtime Entries</a>
-                                            <a class="dropdown-item active" href="volume-budget.html">Volume Budget</a>
-                                            <a class="dropdown-item" href="time-budget.html">Time Budget Actual</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="nav-item" id="nav-item-absensi">
-                                <a class="nav-link" href="absensi.html">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-user-check" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
-                                            <path d="M15 19l2 2l4 -4" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">Absensi</span>
-                                </a>
-                            </li>
-                        </ul>
-
-                        <!-- Menu Sisi Kanan: Profile murni sendirian di paling kanan -->
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-profile" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-user-circle" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                                            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.832 2.849" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">Profile</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">My Profile</a>
-                                    <a class="dropdown-item" href="#">Settings</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger" href="#">Logout</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="page-wrapper">
-            <div class="page-header d-print-none">
-                <div class="container-fluid px-3">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h2 class="page-title text-dark font-weight-bold" style="font-size: 1.4rem; letter-spacing: 0.3px;">Master Production: Volume Budget</h2>
-                            <div class="text-muted text-xs mt-1">Rencana target volume (Budget) dan batas rendemen (Yield) mingguan.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="page-body">
-                <div class="container-fluid px-3">
-                    <div class="card shadow-sm">
-                        <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3 py-2 bg-white">
-                            <h3 class="card-title text-muted m-0">Volume Budgeting Sheet</h3>
-                            <div class="d-flex align-items-center gap-2">
-                                <button class="btn btn-sm btn-outline-secondary" onclick="triggerUpload('volume-budget')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-upload" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 9l5 -5l5 5" /><path d="M12 4v12" /></svg>
+<div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
+<div class="sidebar-header border-bottom">
+<div class="sidebar-brand me-auto">
+<div class="sidebar-brand-full fw-bold fs-5 text-white" style="letter-spacing: 0.5px;">DSM Firmenich</div>
+<div class="sidebar-brand-narrow fw-bold fs-5 text-white">DSM</div>
+</div>
+<button aria-label="Close" class="btn-close d-lg-none" data-coreui-theme="dark" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()" type="button"></button>
+</div>
+<ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
+<li class="nav-item">
+<a class="nav-link" href="index.html">
+<svg class="nav-icon" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M425.706 142.294A240 240 0 0 0 16 312v88h144v-32H48v-56c0-114.691 93.309-208 208-208s208 93.309 208 208v56H352v32h144v-88a238.43 238.43 0 0 0-70.294-169.706" fill="var(--ci-primary-color, currentcolor)"></path>
+<path class="ci-primary" d="M80 264h32v32H80zm160-136h32v32h-32zm-104 40h32v32h-32zm264 96h32v32h-32zm-102.778 71.1 69.2-144.173-28.85-13.848-69.183 144.135a64.141 64.141 0 1 0 28.833 13.886M256 416a32 32 0 1 1 32-32 32.036 32.036 0 0 1-32 32" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+      Production Analytical
+    </a>
+</li>
+<li class="nav-group">
+<a class="nav-link nav-group-toggle" href="#">
+<svg class="nav-icon" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="m491.693 256.705-54.957-49.461 16.407-13.406a80.5 80.5 0 0 0 18.363-21.522c18.148-31.441 12.867-70.042-13.144-96.052s-64.612-31.291-96.051-13.142a80.5 80.5 0 0 0-21.52 18.362l-13.408 16.407-49.461-54.956-.579-.611a24.03 24.03 0 0 0-33.941 0l-65.6 65.605 1.19 23.7 33.108 27.056a48.6 48.6 0 0 1 11.079 12.889c10.807 18.722 7.57 41.8-8.056 57.426s-38.7 18.862-57.426 8.058a48.7 48.7 0 0 1-12.9-11.086l-27.047-33.1-23.7-1.189-71.26 71.26a24 24 0 0 0 0 33.942l175.357 175.359a80 80 0 0 0 113.138 0L492.3 291.225a24.03 24.03 0 0 0 0-33.94ZM288.657 449.617a48 48 0 0 1-67.883 0L51.069 279.911l53.1-53.095 15.91 19.473.1.119a80.5 80.5 0 0 0 21.521 18.363c31.441 18.149 70.041 12.867 96.052-13.144s31.291-64.61 13.143-96.05a80.5 80.5 0 0 0-18.363-21.521l-19.591-16.01 47.124-47.124 56.018 62.241 24.282-.579 25.062-30.67a48.6 48.6 0 0 1 12.888-11.078c18.722-10.807 41.8-7.569 57.426 8.056s18.864 38.7 8.057 57.426a48.6 48.6 0 0 1-11.079 12.889l-30.67 25.061-.58 24.282 62.243 56.018Z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+      Master Data
+    </a>
+<ul class="nav-group-items compact">
+<li class="nav-group show">
+<a class="nav-link nav-group-toggle" href="#">
+<span class="nav-icon"><span class="nav-icon-bullet"></span></span>
+          Master Production
+        </a>
+<ul class="nav-group-items compact">
+<li class="nav-item"><a class="nav-link" href="prod-items.html"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Prod Items</a></li>
+<li class="nav-item"><a class="nav-link" href="prod-entries.html"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Prod Entries</a></li>
+<li class="nav-item"><a class="nav-link" href="downtime-entries.html"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Downtime Entries</a></li>
+<li class="nav-item"><a class="nav-link active" href="volume-budget.html"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Volume Budget</a></li>
+<li class="nav-item"><a class="nav-link" href="time-budget.html"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Time Budget Actual</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="absensi.html">
+<svg class="nav-icon" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 0h24v24H0z" fill="none" stroke="none"></path>
+<path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+<path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+<path d="M15 19l2 2l4 -4"></path>
+</svg>
+      Absensi
+    </a>
+</li>
+</ul>
+<div class="sidebar-footer border-top d-none d-md-flex">
+<button class="sidebar-toggler" data-coreui-toggle="unfoldable" type="button"></button>
+</div>
+</div>
+<div class="wrapper d-flex flex-column min-vh-100">
+<header class="header header-sticky p-0 mb-4">
+<div class="container-fluid border-bottom px-4">
+<button class="header-toggler" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()" style="margin-inline-start: -14px" type="button">
+<svg class="icon icon-lg" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M80 96h352v32H80zm0 144h352v32H80zm0 144h352v32H80z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+</button>
+<ul class="header-nav">
+<li class="nav-item py-1">
+<div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+</li>
+<li class="nav-item dropdown">
+<button aria-expanded="false" class="btn btn-link nav-link py-2 px-2 d-flex align-items-center" data-coreui-toggle="dropdown" type="button">
+<svg class="icon icon-lg theme-icon-active" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M256 16C123.452 16 16 123.452 16 256s107.452 240 240 240 240-107.452 240-240S388.548 16 256 16m-22 446.849a208.35 208.35 0 0 1-169.667-125.9c-.364-.859-.706-1.724-1.057-2.587L234 429.939Zm0-69.582L50.889 290.76A210 210 0 0 1 48 256q0-9.912.922-19.67L234 339.939Zm0-90L54.819 202.96a206 206 0 0 1 9.514-27.913Q67.1 168.5 70.3 162.191L234 253.934Zm0-86.015L86.914 134.819a209.4 209.4 0 0 1 22.008-25.9q3.72-3.72 7.6-7.228L234 166.027Zm0-87.708-89.648-49.093A206.95 206.95 0 0 1 234 49.151ZM464 256a207.775 207.775 0 0 1-198 207.761V48.239A207.79 207.79 0 0 1 464 256" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+</button>
+<ul class="dropdown-menu dropdown-menu-end" style="--cui-dropdown-min-width: 8rem">
+<li>
+<button class="dropdown-item d-flex align-items-center" data-coreui-theme-value="light" type="button">
+<svg class="icon icon-lg me-3" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M256 104c-83.813 0-152 68.187-152 152s68.187 152 152 152 152-68.187 152-152-68.187-152-152-152m0 272a120 120 0 1 1 120-120 120.136 120.136 0 0 1-120 120M240 16h32v48h-32zm0 432h32v48h-32zm208-208h48v32h-48zm-432 0h48v32H16zm372.687 171.314 22.627-22.627 32 32-22.627 22.627zm-320-320 22.628-22.628 32 32-22.628 22.628zm-.002 329.375 32-32 22.628 22.626-32 32zm320.002-320.003 32-32 22.628 22.628-32 32z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                    Light
+                  </button>
+</li>
+<li>
+<button class="dropdown-item d-flex align-items-center" data-coreui-theme-value="dark" type="button">
+<svg class="icon icon-lg me-3" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M268.279 496c-67.574 0-130.978-26.191-178.534-73.745S16 311.293 16 243.718A252.25 252.25 0 0 1 154.183 18.676a24.44 24.44 0 0 1 34.46 28.958 220.12 220.12 0 0 0 54.8 220.923A218.75 218.75 0 0 0 399.085 333.2a220.2 220.2 0 0 0 65.277-9.846 24.439 24.439 0 0 1 28.959 34.461A252.26 252.26 0 0 1 268.279 496M153.31 55.781A219.3 219.3 0 0 0 48 243.718C48 365.181 146.816 464 268.279 464a219.3 219.3 0 0 0 187.938-105.31 253 253 0 0 1-57.13 6.513 250.54 250.54 0 0 1-178.268-74.016 252.15 252.15 0 0 1-67.509-235.4Z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                    Dark
+                  </button>
+</li>
+<li>
+<button class="dropdown-item d-flex align-items-center active" data-coreui-theme-value="auto" type="button">
+<svg class="icon icon-lg me-3" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M256 16C123.452 16 16 123.452 16 256s107.452 240 240 240 240-107.452 240-240S388.548 16 256 16m-22 446.849a208.35 208.35 0 0 1-169.667-125.9c-.364-.859-.706-1.724-1.057-2.587L234 429.939Zm0-69.582L50.889 290.76A210 210 0 0 1 48 256q0-9.912.922-19.67L234 339.939Zm0-90L54.819 202.96a206 206 0 0 1 9.514-27.913Q67.1 168.5 70.3 162.191L234 253.934Zm0-86.015L86.914 134.819a209.4 209.4 0 0 1 22.008-25.9q3.72-3.72 7.6-7.228L234 166.027Zm0-87.708-89.648-49.093A206.95 206.95 0 0 1 234 49.151ZM464 256a207.775 207.775 0 0 1-198 207.761V48.239A207.79 207.79 0 0 1 464 256" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                    Auto
+                  </button>
+</li>
+</ul>
+</li>
+<li class="nav-item py-1">
+<div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" aria-haspopup="true" class="nav-link py-0 pe-0" data-coreui-toggle="dropdown" href="#" role="button">
+<div class="avatar avatar-md"><img alt="user@email.com" class="avatar-img" src="assets/img/avatars/8.jpg"/></div>
+</a>
+<div class="dropdown-menu dropdown-menu-end pt-0">
+<div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2">Account</div>
+<a class="dropdown-item" href="#">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="m450.27 348.569-43.67-80.624V184c0-83.813-68.187-152-152-152s-152 68.187-152 152v83.945l-43.672 80.623A24 24 0 0 0 80.031 384h86.935a89 89 0 0 0-.367 8 88 88 0 0 0 176 0c0-2.7-.129-5.364-.367-8h86.935a24 24 0 0 0 21.1-35.431ZM310.6 392a56 56 0 1 1-111.419-8h110.837a56 56 0 0 1 .582 8M93.462 352l41.138-75.945V184a120 120 0 0 1 240 0v92.055L415.736 352Z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Updates
+                  <span class="badge badge-sm bg-info ms-2">8</span>
+</a>
+<a class="dropdown-item" href="#">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M274.6 25.623a32.01 32.01 0 0 0-37.2 0L16 183.766V496h480V183.766ZM464 402.693 339.97 322.96 464 226.492ZM256 51.662 454.429 193.4 311.434 304.615 256 268.979l-55.434 35.636L57.571 193.4ZM48 226.492l124.03 96.468L48 402.693ZM464 464H48v-23.265l208-133.714 208 133.714Z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Messages
+                  <span class="badge badge-sm bg-success ms-2">42</span>
+</a>
+<a class="dropdown-item" href="#">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="m222.085 235.644-62.01-62.01L81.8 251.905l62.009 62.01-.04.04 66.958 66.957 11.354 11.275.04.039 66.957-66.957 11.273-11.354 202.277-202.271-78.272-78.271Zm44.33 66.958-11.274 11.353-33.057 33.056-.04-.039-33.017-33.017.04-.04-62.009-62.01 33.016-33.016 62.01 62.009L424.356 78.627l33.017 33.017Z" fill="var(--ci-primary-color, currentcolor)"></path>
+<path class="ci-primary" d="M448 464H48V64h300.22l32-32H16v464h464V179.095l-32 32z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Tasks
+                </a>
+<a class="dropdown-item" href="#">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M496 496h-47.229l-69.522-128H40a24.03 24.03 0 0 1-24-24V40a24.03 24.03 0 0 1 24-24h432a24.03 24.03 0 0 1 24 24ZM48 336h350.284L464 456.993V48H48Z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Comments
+                </a>
+<div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
+<div class="fw-semibold">Settings</div>
+</div>
+<a class="dropdown-item" href="#">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="m411.6 343.656-72.823-47.334 27.455-50.334A80.2 80.2 0 0 0 376 207.681V128a112 112 0 0 0-224 0v79.681a80.24 80.24 0 0 0 9.768 38.308l27.455 50.333-72.823 47.334A79.72 79.72 0 0 0 80 410.732V496h368v-85.268a79.73 79.73 0 0 0-36.4-67.076M416 464H112v-53.268a47.84 47.84 0 0 1 21.841-40.246l97.66-63.479-41.64-76.341A48.15 48.15 0 0 1 184 207.681V128a80 80 0 0 1 160 0v79.681a48.15 48.15 0 0 1-5.861 22.985L296.5 307.007l97.662 63.479A47.84 47.84 0 0 1 416 410.732Z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Profile
+                </a>
+<a class="dropdown-item" href="#">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M245.151 168a88 88 0 1 0 88 88 88.1 88.1 0 0 0-88-88m0 144a56 56 0 1 1 56-56 56.063 56.063 0 0 1-56 56" fill="var(--ci-primary-color, currentcolor)"></path>
+<path class="ci-primary" d="m464.7 322.319-31.77-26.153a193.1 193.1 0 0 0 0-80.332l31.77-26.153a19.94 19.94 0 0 0 4.606-25.439l-32.612-56.483a19.936 19.936 0 0 0-24.337-8.73l-38.561 14.447a192 192 0 0 0-69.54-40.192l-6.766-40.571A19.936 19.936 0 0 0 277.762 16H212.54a19.94 19.94 0 0 0-19.728 16.712l-6.762 40.572a192 192 0 0 0-69.54 40.192L77.945 99.027a19.94 19.94 0 0 0-24.334 8.731L21 164.245a19.94 19.94 0 0 0 4.61 25.438l31.767 26.151a193.1 193.1 0 0 0 0 80.332l-31.77 26.153A19.94 19.94 0 0 0 21 347.758l32.612 56.483a19.94 19.94 0 0 0 24.337 8.73l38.562-14.447a192 192 0 0 0 69.54 40.192l6.762 40.571A19.94 19.94 0 0 0 212.54 496h65.222a19.936 19.936 0 0 0 19.728-16.712l6.763-40.572a192 192 0 0 0 69.54-40.192l38.564 14.449a19.94 19.94 0 0 0 24.334-8.731l32.609-56.487a19.94 19.94 0 0 0-4.6-25.436m-50.636 57.12-48.109-18.024-7.285 7.334a159.96 159.96 0 0 1-72.625 41.973l-10 2.636L267.6 464h-44.89l-8.442-50.642-10-2.636a159.96 159.96 0 0 1-72.625-41.973l-7.285-7.334-48.117 18.024L53.8 340.562l39.629-32.624-2.7-9.973a160.9 160.9 0 0 1 0-83.93l2.7-9.972L53.8 171.439l22.446-38.878 48.109 18.024 7.285-7.334a159.96 159.96 0 0 1 72.625-41.973l10-2.636L222.706 48H267.6l8.442 50.642 10 2.636a159.96 159.96 0 0 1 72.625 41.973l7.285 7.334 48.109-18.024 22.447 38.877-39.629 32.625 2.7 9.972a160.9 160.9 0 0 1 0 83.93l-2.7 9.973 39.629 32.623Z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Settings
+                </a>
+<a class="dropdown-item" href="#">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M472 72H40a24.03 24.03 0 0 0-24 24v320a24.03 24.03 0 0 0 24 24h432a24.03 24.03 0 0 0 24-24V96a24.03 24.03 0 0 0-24-24m-8 32v64H48v-64ZM48 408V232h416v176Z" fill="var(--ci-primary-color, currentcolor)"></path>
+<path class="ci-primary" d="M88 312h64v32H88zm96 0h64v32h-64z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Payments
+                </a>
+<a class="dropdown-item" href="#">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M334.627 16H48v480h424V153.373ZM440 166.627V168H320V48h1.373ZM80 464V48h208v152h152v264Z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Projects
+                </a>
+<div class="dropdown-divider"></div>
+<a class="dropdown-item" href="#">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M384 200v-56a128 128 0 0 0-256 0v56H88v128c0 92.635 75.364 168 168 168s168-75.365 168-168V200Zm-224-56a96 96 0 0 1 192 0v56H160Zm232 184c0 74.99-61.01 136-136 136s-136-61.01-136-136v-96h272Z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Lock Account
+                </a>
+<a class="dropdown-item" href="/authentication/login.html">
+<svg class="icon me-2" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path class="ci-primary" d="M77.155 272.034H351.75v-32.001H77.155l75.053-75.053v-.001l-22.628-22.626-113.681 113.68.001.001h-.001L129.58 369.715l22.628-22.627v-.001z" fill="var(--ci-primary-color, currentcolor)"></path>
+<path class="ci-primary" d="M160 16v32h304v416H160v32h336V16z" fill="var(--ci-primary-color, currentcolor)"></path>
+</svg>
+                  Logout
+                </a>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid px-4">
+<nav aria-label="breadcrumb">
+<ol class="breadcrumb my-0">
+<li class="breadcrumb-item active"><span>Home</span></li>
+</ol>
+</nav>
+</div>
+</header>
+<div class="body flex-grow-1">
+<div class="container-lg px-4">
+<div class="row">
+<div class="col-12">
+<div class="card mb-4 shadow-sm">
+<div class="card-header d-flex justify-content-between align-items-center">
+<strong>Master Production: Volume Budget</strong>
+<div class="d-flex align-items-center gap-2">
+<button class="btn btn-sm btn-outline-secondary" onclick="triggerUpload('volume-budget')">
+<svg class="icon icon-tabler icon-tabler-upload" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none" stroke="none"></path><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path><path d="M7 9l5 -5l5 5"></path><path d="M12 4v12"></path></svg>
                                     Upload Excel
                                 </button>
-                                <input type="file" id="upload-volume-budget" class="d-none" onchange="handleMockUpload(this, 'table-volume-budget', 'Volume Budget')">
-                                
-                                <button class="btn btn-sm btn-outline-secondary" onclick="downloadTemplate('volume-budget', ['Month/Wk', 'Tonality', 'Budget Qty', 'Target Yield', 'Expected Qty'])">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M12 17v-6" /><path d="M9.5 14.5l2.5 2.5l2.5 -2.5" /></svg>
+<input class="d-none" id="upload-volume-budget" onchange="handleMockUpload(this, 'table-volume-budget', 'Volume Budget')" type="file"/>
+<button class="btn btn-sm btn-outline-secondary" onclick="downloadTemplate('volume-budget', ['Month/Wk', 'Tonality', 'Budget Qty', 'Target Yield', 'Expected Qty'])">
+<svg class="icon icon-tabler icon-tabler-file-download" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none" stroke="none"></path><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path><path d="M12 17v-6"></path><path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path></svg>
                                     Download Template
                                 </button>
-                                
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+<div class="dropdown">
+<button class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown">
                                         Export Data
                                     </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="javascript:void(0)" onclick="exportToCSV('table-volume-budget', 'volume_budget.csv')">Export to CSV</a>
-                                        <a class="dropdown-item" href="javascript:void(0)" onclick="exportToExcelMock('table-volume-budget', 'volume_budget.xlsx')">Export to Excel</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table id="table-volume-budget" class="table card-table table-vcenter text-nowrap table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Month/Wk</th>
-                                            <th>Tonality</th>
-                                            <th>Budget Qty (kg)</th>
-                                            <th>Target Yield (%)</th>
-                                            <th>Expected Qty (kg)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>2025 Wk 01</td>
-                                            <td>Citrus Rumpun</td>
-                                            <td>20,000</td>
-                                            <td>91.0%</td>
-                                            <td>18,200</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2025 Wk 01</td>
-                                            <td>Berries Fruit</td>
-                                            <td>10,000</td>
-                                            <td>91.0%</td>
-                                            <td>9,100</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2025 Wk 02</td>
-                                            <td>Citrus Rumpun</td>
-                                            <td>38,000</td>
-                                            <td>91.0%</td>
-                                            <td>34,580</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2025 Wk 02</td>
-                                            <td>Tropical Blend</td>
-                                            <td>15,000</td>
-                                            <td>91.0%</td>
-                                            <td>13,650</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="dropdown-menu dropdown-menu-end">
+<a class="dropdown-item" href="javascript:void(0)" onclick="exportToCSV('table-volume-budget', 'volume_budget.csv')">Export to CSV</a>
+<a class="dropdown-item" href="javascript:void(0)" onclick="exportToExcelMock('table-volume-budget', 'volume_budget.xlsx')">Export to Excel</a>
+</div>
+</div>
+</div>
+</div>
+<div class="card-body p-0">
+<div class="table-responsive">
+<table class="table table-striped table-hover align-middle border mb-0" id="table-volume-budget">
+<thead class="">
+<tr>
+<th>Month/Wk</th>
+<th>Tonality</th>
+<th>Budget Qty (kg)</th>
+<th>Target Yield (%)</th>
+<th>Expected Qty (kg)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025 Wk 01</td>
+<td>Citrus Rumpun</td>
+<td>20,000</td>
+<td>91.0%</td>
+<td>18,200</td>
+</tr>
+<tr>
+<td>2025 Wk 01</td>
+<td>Berries Fruit</td>
+<td>10,000</td>
+<td>91.0%</td>
+<td>9,100</td>
+</tr>
+<tr>
+<td>2025 Wk 02</td>
+<td>Citrus Rumpun</td>
+<td>38,000</td>
+<td>91.0%</td>
+<td>34,580</td>
+</tr>
+<tr>
+<td>2025 Wk 02</td>
+<td>Tropical Blend</td>
+<td>15,000</td>
+<td>91.0%</td>
+<td>13,650</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="footer px-4">
+<div>
+<a href="https://sangkuriangtech.my.id">Sangkuriang Tech</a> © 2026.
     </div>
 
-    <!-- Notification Toast -->
-    <div id="app-toast" class="custom-toast">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-            <path d="M9 12l2 2l4 -4"></path>
-        </svg>
-        <span id="toast-message">Success!</span>
-    </div>
+</footer>
+</div>
+<!-- CoreUI and necessary plugins-->
+<script src="vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+<script src="vendors/simplebar/js/simplebar.min.js"></script>
+<script>
+      const header = document.querySelector("header.header");
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@1.6.3/dist/vanilla-dataTables.min.js"></script>
-
-    <script>
+      document.addEventListener("scroll", () => {
+        if (header) {
+          header.classList.toggle("shadow-sm", document.documentElement.scrollTop > 0);
+        }
+      });
+    </script>
+<script>
         let dataTableInstance;
         const tableId = 'table-volume-budget';
 
@@ -372,7 +368,7 @@
             link.click();
             document.body.removeChild(link);
             
-            showToast("Berhasil mengekspor data ke " + filename, "info");
+            alert("Berhasil mengekspor data ke " + filename, "info");
         }
 
         function exportToExcelMock(targetTableId, filename) {
@@ -392,7 +388,7 @@
             link.click();
             document.body.removeChild(link);
             
-            showToast("Berhasil mengunduh template: template_" + subId + ".csv", "success");
+            alert("Berhasil mengunduh template: template_" + subId + ".csv", "success");
         }
 
         function triggerUpload(subId) {
@@ -436,24 +432,7 @@
             }, 1200);
         }
 
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('app-toast');
-            const messageSpan = document.getElementById('toast-message');
-            messageSpan.innerText = message;
-            
-            toast.className = 'custom-toast';
-            if (type === 'danger') {
-                toast.classList.add('bg-danger');
-            } else if (type === 'info') {
-                toast.classList.add('bg-info');
-            }
-            
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
+        function showToast(message) { alert(message); }
 
         window.addEventListener('DOMContentLoaded', () => {
             dataTableInstance = new DataTable('#' + tableId, {
@@ -464,5 +443,4 @@
         });
     </script>
 </body>
-
 </html>
