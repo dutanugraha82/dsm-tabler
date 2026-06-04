@@ -334,7 +334,7 @@
 </select>
 </div>
 <div class="card-body">
-<div class="chart-box-wrapper w-100" style="height:250px; position:relative;">
+<div class="chart-box-wrapper w-100" style="height:300px; position:relative;">
 <div class="chart-box" id="chart-speed-gauge"></div>
 </div>
 </div>
@@ -660,7 +660,7 @@
                 { name: 'Actual Yield (%)', type: 'line', data: [91.7, 91.9, 91.5, 92.1, 91.8] },
                 { name: 'Target Limit', type: 'line', data: [91.0, 91.0, 91.0, 91.0, 91.0] }
             ],
-            chart: { height: 320, type: 'line', toolbar: { show: true } },
+            chart: { height: '100%', type: 'line', toolbar: { show: true } },
             stroke: { width: [3, 1.5], dashArray: [0, 4], curve: 'smooth' },
             colors: ['#206bc4', '#ff4560'],
             grid: { padding: { top: 10, right: 10, bottom: 25, left: 15 } },
@@ -676,7 +676,7 @@
                 { name: 'Volume Qty (kg)', type: 'column', data: [32450, 12800, 9000, 5400, 4100, 3200, 2900] },
                 { name: 'PrO Count', type: 'line', data: [18, 8, 6, 3, 2, 2, 1] }
             ],
-            chart: { height: 320, type: 'line', toolbar: { show: true } },
+            chart: { height: '100%', type: 'line', toolbar: { show: true } },
             stroke: { width: [0, 2] },
             colors: ['#4299e1', '#f59e0b'],
             grid: { padding: { top: 10, right: 20, bottom: 25, left: 20 } },
@@ -690,10 +690,10 @@
 
         // 3. Chart Speed Gauge
         var speedChart = new ApexCharts(document.querySelector("#chart-speed-gauge"), { theme: { mode: document.documentElement.dataset.coreuiTheme === "dark" ? "dark" : "light" },
-            chart: { type: 'radialBar', height: 380, sparkline: { enabled: false } },
+            chart: { type: 'radialBar', height: '100%', sparkline: { enabled: false } },
             series: [55.8],
             grid: { padding: { top: -10, bottom: -20, left: 0, right: 0 } },
-            plotOptions: { radialBar: { startAngle: -90, endAngle: 90, offsetY: 55, hollow: { size: '65%' }, track: { background: "#e7e7e7", strokeWidth: '100%', margin: 0 }, dataLabels: { name: { show: true, fontSize: '12px', color: '#6c757d', offsetY: -10 }, value: { offsetY: -42, fontSize: '24px', fontWeight: 'bold', color: '#111', formatter: function () { return "669.8 kg/hr"; } } } } },
+            plotOptions: { radialBar: { startAngle: -90, endAngle: 90, offsetY: 0, hollow: { size: '65%' }, track: { background: "#e7e7e7", strokeWidth: '100%', margin: 0 }, dataLabels: { name: { show: true, fontSize: '12px', color: '#6c757d', offsetY: -10 }, value: { offsetY: -20, fontSize: '24px', fontWeight: 'bold', color: '#111', formatter: function () { return "669.8 kg/hr"; } } } } },
             fill: { type: 'gradient', gradient: { shade: 'dark', type: 'horizontal', shadeIntensity: 0.1, colorStops: [{ offset: 0, color: '#FF4560', opacity: 1 }, { offset: 65, color: '#FFE000', opacity: 1 }, { offset: 100, color: '#00E396', opacity: 1 }] } },
             labels: ['Speed Rate (Citrus)'],
         });
@@ -712,7 +712,7 @@
                     if(document.querySelector("#chart-vol-vs-dt")) {
                         var volVsDtChart = new ApexCharts(document.querySelector("#chart-vol-vs-dt"), { theme: { mode: document.documentElement.dataset.coreuiTheme === "dark" ? "dark" : "light" },
                             series: [ { name: 'Production Volume (kg)', type: 'area', data: [19175, 35075, 22000, 28500] }, { name: 'Total Downtime (hrs)', type: 'line', data: [32.5, 32.0, 41.0, 29.5] } ],
-                            chart: { height: 320, type: 'line', toolbar: { show: true } },
+                            chart: { height: '100%', type: 'line', toolbar: { show: true } },
                             stroke: { width: [0, 2], curve: 'smooth' },
                             colors: ['#b3e5fc', '#d63939'],
                             fill: { opacity: [0.5, 1] },
@@ -727,7 +727,7 @@
                     if(document.querySelector("#chart-time-proportion")) {
                         var proportionChart = new ApexCharts(document.querySelector("#chart-time-proportion"), { theme: { mode: document.documentElement.dataset.coreuiTheme === "dark" ? "dark" : "light" },
                             series: [522, 98.5, 36, 24],
-                            chart: { height: 320, type: 'donut' },
+                            chart: { height: '100%', type: 'donut' },
                             labels: ['Uptime', 'Planned DT', 'Unplanned DT', 'Idle'],
                             colors: ['#2fb344', '#f59e0b', '#d63939', '#6f42c1'],
                             legend: { position: 'bottom', fontSize: '10px' },
