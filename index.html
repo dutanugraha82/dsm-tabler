@@ -53,6 +53,7 @@
     .dataTable-table td, .dataTable-table th { padding: 0.5rem 0.6rem !important; font-size: 0.875rem !important; }
     .dataTable-table th a { color: inherit; text-decoration: none; }
     </style>
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
@@ -259,7 +260,36 @@
 </div>
 </div>
 </div>
-<ul class="nav nav-tabs mb-4" role="tablist">
+<style>
+.nav-tabs .nav-link {
+    border: 1px solid #c4c9d0;
+    background-color: #ebedef;
+    margin-right: 0.25rem;
+    color: #4f5d73;
+}
+.nav-tabs .nav-link:hover {
+    border-color: #b1b7c1;
+    background-color: #e2e5e9;
+}
+html[data-coreui-theme="dark"] .nav-tabs .nav-link {
+    border-color: #3b4351;
+    background-color: #212631;
+    color: #aeb7c6;
+}
+html[data-coreui-theme="dark"] .nav-tabs .nav-link.active {
+    background-color: #2a303d;
+    border-bottom-color: #2a303d;
+    color: #fff;
+}
+.nav-tabs .nav-link.active {
+    background-color: #fff;
+    border-bottom-color: #fff;
+    border-top: 3px solid #321fdb;
+    color: #321fdb;
+    font-weight: 600;
+}
+</style>
+<ul class="nav nav-tabs mb-4 border-bottom-0" role="tablist">
 <li class="nav-item">
 <a class="nav-link active" data-coreui-toggle="tab" href="#dash1" role="tab">Dashboard 1: Volume &amp; Yield</a>
 </li>
@@ -358,7 +388,7 @@
 <strong>Graph Yield / Month / Yield (vs Target 91%)</strong>
 </div>
 <div class="card-body">
-<div class="chart-box-wrapper w-100" style="height:300px; position:relative;">
+<div class="chart-box-wrapper w-100" style="height:250px; position:relative;">
 <div class="chart-box" id="chart-yield-trend"></div>
 </div>
 </div>
@@ -377,8 +407,8 @@
 <option value="Tropical">Tropical</option>
 </select>
 </div>
-<div class="card-body">
-<div class="chart-box-wrapper w-100" style="height:300px; position:relative;">
+<div class="card-body d-flex flex-column align-items-center justify-content-center">
+<div class="chart-box-wrapper w-100" style="height:250px; position:relative;">
 <div class="chart-box" id="chart-speed-gauge"></div>
 </div>
 </div>
@@ -392,7 +422,7 @@
 <strong>Graph Act Qty (Vol) and PrO per Tonality</strong>
 </div>
 <div class="card-body">
-<div class="chart-box-wrapper w-100" style="height:300px; position:relative;">
+<div class="chart-box-wrapper w-100" style="height:250px; position:relative;">
 <div class="chart-box" id="chart-qty-tonality"></div>
 </div>
 </div>
@@ -600,7 +630,7 @@
 <strong>Total Downtime Proportion</strong>
 </div>
 <div class="card-body">
-<div class="chart-box-wrapper w-100" style="height:300px; position:relative;">
+<div class="chart-box-wrapper w-100" style="height:250px; position:relative;">
 <div class="chart-box" id="chart-time-proportion"></div>
 </div>
 </div>
@@ -612,7 +642,7 @@
 <strong>Weekly Downtime vs Volume Qty</strong>
 </div>
 <div class="card-body">
-<div class="chart-box-wrapper w-100" style="height:300px; position:relative;">
+<div class="chart-box-wrapper w-100" style="height:250px; position:relative;">
 <div class="chart-box" id="chart-vol-vs-dt"></div>
 </div>
 </div>
@@ -825,7 +855,7 @@
             chart: { type: 'radialBar', height: '100%', sparkline: { enabled: false } },
             series: [55.8],
             grid: { padding: { top: -10, bottom: -20, left: 0, right: 0 } },
-            plotOptions: { radialBar: { startAngle: -90, endAngle: 90, offsetY: 0, hollow: { size: '70%' }, track: { background: "#e7e7e7", strokeWidth: '100%', margin: 0 }, dataLabels: { name: { show: true, fontSize: '13px', color: '#6c757d', offsetY: -35 }, value: { offsetY: -10, fontSize: '20px', fontWeight: 'bold', color: '#111', formatter: function () { return "669.8 kg/hr"; } } } } },
+            plotOptions: { radialBar: { startAngle: -90, endAngle: 90, offsetY: 40, hollow: { size: '70%' }, track: { background: "#e7e7e7", strokeWidth: '100%', margin: 0 }, dataLabels: { name: { show: true, fontSize: '13px', color: '#6c757d', offsetY: -35 }, value: { offsetY: -10, fontSize: '20px', fontWeight: 'bold', color: '#111', formatter: function () { return "669.8 kg/hr"; } } } } },
             fill: { type: 'gradient', gradient: { shade: 'light', type: 'horizontal', shadeIntensity: 0.5, colorStops: [{ offset: 0, color: '#FF4560', opacity: 1 }, { offset: 25, color: '#FF7E40', opacity: 1 }, { offset: 50, color: '#FFE000', opacity: 1 }, { offset: 75, color: '#8CE04A', opacity: 1 }, { offset: 100, color: '#00E396', opacity: 1 }] } },
             labels: ['Speed Rate (Citrus)'],
         });
@@ -861,7 +891,7 @@
                             series: [522, 98.5, 36, 24],
                             chart: { height: '100%', type: 'donut' },
                             labels: ['Uptime', 'Planned DT', 'Unplanned DT', 'Idle'],
-                            colors: ['#2fb344', '#f59e0b', '#d63939', '#6f42c1'],
+                            colors: ['#0ba360', '#667eea', '#b224ef', '#4facfe'],
                             legend: { position: 'bottom', fontSize: '10px' },
                             dataLabels: { enabled: true, formatter: function (val, opts) { return val.toFixed(1) + "%"; }, style: { fontSize: '10px', fontWeight: 'bold', colors: ['#fff'] }, dropShadow: { enabled: true } }
                         });
@@ -883,6 +913,31 @@
             labels: ['Speed Rate (' + tonalityName + ')']
         });
     }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+    <style>
+    /* Compact DataTables styling */
+    .dataTables_wrapper { font-size: 0.8rem; }
+    .dataTables_wrapper .form-control-sm { font-size: 0.8rem; padding: 0.25rem 0.5rem; }
+    .dataTables_wrapper .form-select-sm { font-size: 0.8rem; padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 1.6rem; }
+    .dataTables_wrapper .page-link { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+    table.dataTable.table-sm > thead > tr > th { padding-right: 20px; }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('table.table').addClass('table-sm align-middle').DataTable({
+                destroy: true,
+                dom: '<"px-3 py-2 border-bottom"<"row align-items-center"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>>' +
+                     '<"table-responsive"tr>' +
+                     '<"px-3 py-2 border-top"<"row align-items-center"<"col-12 col-lg-5"i><"col-12 col-lg-7"p>>>',
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search...",
+                    lengthMenu: "Show _MENU_ entries"
+                }
+            });
+        });
     </script>
 </body>
 </html>
