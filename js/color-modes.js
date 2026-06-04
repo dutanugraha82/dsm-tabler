@@ -47,7 +47,7 @@
     if (storedTheme) {
       return storedTheme;
     }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return 'light';
   };
 
   /**
@@ -55,8 +55,8 @@
    * @param {string} theme - Theme to apply ('light', 'dark', or 'auto')
    */
   const setTheme = theme => {
-    if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-coreui-theme', 'dark');
+    if (theme === 'auto') {
+      document.documentElement.setAttribute('data-coreui-theme', 'light');
     } else {
       document.documentElement.setAttribute('data-coreui-theme', theme);
     }
