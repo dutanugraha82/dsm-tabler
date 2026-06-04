@@ -3,7 +3,7 @@
   <!--begin::Head-->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>AdminLTE 4 | Unfixed Sidebar</title>
+    <title>DSM Firmenich - Control Panel</title>
 
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
@@ -13,7 +13,7 @@
     <!--end::Accessibility Meta Tags-->
 
     <!--begin::Primary Meta Tags-->
-    <meta name="title" content="AdminLTE 4 | Unfixed Sidebar" />
+    <meta name="title" content="DSM Firmenich - Control Panel" />
     <meta name="author" content="ColorlibHQ" />
     <meta
       name="description"
@@ -61,7 +61,8 @@
     <!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="./css/adminlte.css" />
     <!--end::Required Plugin(AdminLTE)-->
-  </head>
+      <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
+</head>
   <!--end::Head-->
   <!--begin::Body-->
   <body class="sidebar-expand-lg bg-body-tertiary">
@@ -243,11 +244,11 @@
     </div>
     </div></div></div>
     <div class="app-content"><div class="container-fluid">
-            <div class="row">
+            <div class="row g-4 mb-4">
               <div class="col-12 col-lg-4">
-                <div class="card card-primary card-outline mb-4">
+                <div class="card card-primary card-outline h-100">
                   <div class="card-header"><div class="card-title">Input Absensi</div></div>
-                  <form>
+                  <form class="h-100 d-flex flex-column">
                     <div class="card-body">
                       <div class="mb-3"><label class="form-label">NIK</label><input type="text" class="form-control"></div>
                       <div class="mb-3"><label class="form-label">Nama Lengkap</label><input type="text" class="form-control"></div>
@@ -259,7 +260,7 @@
                 </div>
               </div>
               <div class="col-12 col-lg-8">
-            <div class="card mb-4"><div class="card-header"><h3 class="card-title mb-0">Riwayat Absensi</h3>
+            <div class="card h-100"><div class="card-header"><h3 class="card-title mb-0">Riwayat Absensi</h3>
         <div class="card-tools d-flex gap-2">
             <button class="btn btn-sm btn-light border" onclick="alert('Upload Excel Mock')">
                 <i class="bi bi-upload text-secondary"></i> Upload Excel
@@ -408,6 +409,31 @@
     </script>
     <!--end::Color Mode Toggle-->
     <!--end::Script-->
-  </body>
+      <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+    <style>
+    /* Compact DataTables styling */
+    .dataTables_wrapper { font-size: 0.8rem; }
+    .dataTables_wrapper .form-control-sm { font-size: 0.8rem; padding: 0.25rem 0.5rem; }
+    .dataTables_wrapper .form-select-sm { font-size: 0.8rem; padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 1.6rem; }
+    .dataTables_wrapper .page-link { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+    table.dataTable.table-sm > thead > tr > th { padding-right: 20px; }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('table.table').addClass('table-sm align-middle').DataTable({
+                destroy: true,
+                dom: '<"px-3 py-2 border-bottom"<"row align-items-center"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>>' +
+                     '<"table-responsive"tr>' +
+                     '<"px-3 py-2 border-top"<"row align-items-center"<"col-12 col-lg-5"i><"col-12 col-lg-7"p>>>',
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search...",
+                    lengthMenu: "Show _MENU_ entries"
+                }
+            });
+        });
+    </script>
+</body>
   <!--end::Body-->
 </html>

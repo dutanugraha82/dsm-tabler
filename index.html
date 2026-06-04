@@ -48,6 +48,7 @@
   <link rel="stylesheet" href="./css/adminlte.css" />
   <!--end::Required Plugin(AdminLTE)-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -222,14 +223,14 @@
       </div>
       <div class="app-content">
         <div class="container-fluid">
-          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <ul class="nav nav-pills gap-2 mb-3" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+              <button class="nav-link active border border-primary" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
                 type="button" role="tab" aria-controls="pills-home" aria-selected="true">Dashboard 1: Volume &
                 Yield</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
+              <button class="nav-link border border-primary" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
                 type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Dashboard 2: Waktu &
                 Downtime</button>
             </li>
@@ -702,7 +703,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       var chartYieldTrend = new ApexCharts(document.querySelector("#chart_yield_trend"), {
         series: [{ name: 'Actual Yield (%)', data: [91.7, 91.9, 91.5, 92.1, 91.8] }, { name: 'Target Limit', data: [91.0, 91.0, 91.0, 91.0, 91.0] }],
-        chart: { type: 'line', height: 350 }, stroke: { width: [3, 2], dashArray: [0, 4] },
+        chart: { type: 'line', height: 350 }, stroke: { curve: 'smooth', width: [3, 2], dashArray: [0, 4] },
         xaxis: { categories: ['2025 Wk 01', '2025 Wk 02', '2025 Wk 03', '2025 Wk 04', '2025 Wk 05'] }
       });
       chartYieldTrend.render();
@@ -712,9 +713,10 @@
         plotOptions: {
           radialBar: {
             startAngle: -90, endAngle: 90, offsetY: 35,
+            hollow: { size: '70%' },
             dataLabels: {
-              name: { show: true, offsetY: -40, fontSize: '14px', color: '#6c757d' },
-              value: { offsetY: -10, fontSize: '20px', fontWeight: 'bold', formatter: function (val) { return "669.8 kg/hr" } }
+              name: { show: true, offsetY: -20, fontSize: '14px', color: '#6c757d' },
+              value: { offsetY: 5, fontSize: '20px', fontWeight: 'bold', formatter: function (val) { return "669.8 kg/hr" } }
             }
           }
         },
@@ -742,27 +744,61 @@
       }
 
       var chartVolPro = new ApexCharts(document.querySelector("#chart_vol_pro_tonality"), {
-        series: [{ name: 'Volume Qty (kg)', type: 'column', data: [32450, 12800, 9000, 5400, 4100, 3200, 2900] }, { name: 'PrO Count', type: 'line', data: [18, 8, 6, 3, 2, 2, 1] }],
-        chart: { type: 'line', height: 350 },
+        series: [{ name: 'Volume Qty (kg)', data: [32450, 12800, 9000, 5400, 4100, 3200, 2900] }, { name: 'PrO Count', data: [18, 8, 6, 3, 2, 2, 1] }],
+        chart: { type: 'area', height: 350 },
+        dataLabels: { enabled: false },
+        stroke: { curve: 'smooth' },
         xaxis: { categories: ['Citrus Rumpun', 'Berries Fruit', 'Tropical Blend', 'Bakery and Cereals', 'Brown Note Choice', 'Fantasy Note Mix', 'Herbs & Leaf'] }
       });
       chartVolPro.render();
 
       var chartVolVsDt = new ApexCharts(document.querySelector("#chart_vol_vs_dt"), {
-        series: [{ name: 'Production Volume (kg)', type: 'area', data: [19175, 35075, 22000, 28500] }, { name: 'Total Downtime (hrs)', type: 'line', data: [32.5, 32.0, 41.0, 29.5] }],
-        chart: { type: 'line', height: 350 },
+        series: [{ name: 'Production Volume (kg)', data: [19175, 35075, 22000, 28500] }, { name: 'Total Downtime (hrs)', data: [32.5, 32.0, 41.0, 29.5] }],
+        chart: { type: 'area', height: 350 },
+        dataLabels: { enabled: false },
+        stroke: { curve: 'smooth' },
         xaxis: { categories: ['2025 Wk 01', '2025 Wk 02', '2025 Wk 03', '2025 Wk 04'] }
       });
       chartVolVsDt.render();
 
       var chartDtProp = new ApexCharts(document.querySelector("#chart_dt_proportion"), {
         series: [522, 98.5, 36, 24], chart: { type: 'donut', height: 350 },
+        plotOptions: { pie: { startAngle: -90, endAngle: 270 } },
+        dataLabels: { enabled: false },
+        fill: { type: 'gradient' },
         labels: ['Uptime', 'Planned DT', 'Unplanned DT', 'Idle'],
-        legend: { position: 'bottom' }
+        legend: { position: 'bottom', formatter: function(val, opts) { return val + " - " + opts.w.globals.series[opts.seriesIndex] + " hrs" } }
       });
       chartDtProp.render();
     });
   </script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+    <style>
+    #chart_dt_proportion .apexcharts-legend { display: grid !important; grid-template-columns: 1fr 1fr; justify-content: center; gap: 4px 20px; width: fit-content; margin: 0 auto; text-align: left; }
+    #chart_dt_proportion .apexcharts-legend-series { margin: 0 !important; align-self: center; }
+    /* Compact DataTables styling */
+    .dataTables_wrapper { font-size: 0.8rem; }
+    .dataTables_wrapper .form-control-sm { font-size: 0.8rem; padding: 0.25rem 0.5rem; }
+    .dataTables_wrapper .form-select-sm { font-size: 0.8rem; padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 1.6rem; }
+    .dataTables_wrapper .page-link { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+    table.dataTable.table-sm > thead > tr > th { padding-right: 20px; }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('table.table').addClass('table-sm align-middle').DataTable({
+                destroy: true,
+                dom: '<"px-3 py-2 border-bottom"<"row align-items-center"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>>' +
+                     '<"table-responsive"tr>' +
+                     '<"px-3 py-2 border-top"<"row align-items-center"<"col-12 col-lg-5"i><"col-12 col-lg-7"p>>>',
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search...",
+                    lengthMenu: "Show _MENU_ entries"
+                }
+            });
+        });
+    </script>
 </body>
 <!--end::Body-->
 
