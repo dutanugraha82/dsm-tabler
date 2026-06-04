@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>dsm-firmenich - Control Center</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/css/tabler.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-datatables@1.6.3/dist/vanilla-dataTables.min.css">
     <style>
         /* Layout scrollable alami yang stabil */
         html,
@@ -85,30 +84,10 @@
             font-weight: normal;
         }
 
-        .dataTable-top {
-            padding: 0.75rem 1rem 0.5rem 1rem !important;
-        }
-
-        .dataTable-bottom {
-            padding: 0.5rem 1rem 0.75rem 1rem !important;
-        }
-
-        .dataTable-search input {
-            padding: 0.3rem 0.6rem !important;
-            font-size: 0.75rem !important;
-        }
-
-        .table card-table td,
-        .table card-table th,
-        .dataTable-table td,
-        .dataTable-table th {
+        .table.card-table td,
+        .table.card-table th {
             padding: 0.5rem 0.6rem !important;
             font-size: 0.75rem !important;
-        }
-
-        .dataTable-table th a {
-            color: inherit;
-            text-decoration: none;
         }
 
         /* Font Utilities */
@@ -187,6 +166,7 @@
             background-color: #206bc4;
         }
     </style>
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -433,7 +413,7 @@
                                                     <option value="Tropical">Tropical</option>
                                                 </select>
                                             </div>
-                                            <div class="gauge-box-wrapper flex-fill">
+                                            <div class="gauge-box-wrapper flex-fill d-flex flex-column align-items-center justify-content-center">
                                                 <div id="chart-speed-gauge" style="width: 100%; max-width: 360px;">
                                                 </div>
                                             </div>
@@ -704,33 +684,22 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@1.6.3/dist/vanilla-dataTables.min.js"></script>
-
     <script>
-        // LOGIKA PEWARNAAN DINAMIS DATA TABLES
-        function applyColorCoding(row) {
-            const cell = row.cells[4];
-            if (cell) {
-                const valText = cell.textContent.trim();
-                if (valText.startsWith('-')) {
-                    cell.className = 'text-negative';
-                } else if (valText.startsWith('+') || (parseFloat(valText.replace(/,/g, '')) > 0)) {
-                    cell.className = 'text-positive';
-                } else {
-                    cell.className = 'text-neutral';
-                }
+        // Global DataTable options for jQuery DataTables
+        const dtOptions = {
+            pageLength: 5,
+            lengthChange: false,
+            destroy: true,
+            dom: '<"px-3 py-2 border-bottom"<"row align-items-center"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>>' +
+                 '<"table-responsive"tr>' +
+                 '<"px-3 py-2 border-top"<"row align-items-center"<"col-12 col-lg-5"i><"col-12 col-lg-7"p>>>',
+            language: {
+                search: "",
+                searchPlaceholder: "Search...",
+                lengthMenu: "Show _MENU_ entries"
             }
-        }
-
-        const dtOptions = { perPage: 5, perPageSelect: false, layout: { top: "{search}", bottom: "{info}" } };
-        const dt1 = new DataTable("#table-volume-breakdown", dtOptions);
-        const dt2 = new DataTable("#table-tonality-perf", dtOptions);
+        };
         let dt3;
-
-        dt1.on("datatable.init", () => { dt1.rows().forEach(applyColorCoding); });
-        dt1.on("datatable.page", () => { dt1.rows().forEach(applyColorCoding); });
-        dt1.on("datatable.sort", () => { dt1.rows().forEach(applyColorCoding); });
-        dt1.on("datatable.search", () => { dt1.rows().forEach(applyColorCoding); });
 
         // LOGIKA INTERAKTIF DATE RANGE PICKER
         function handleDateRangeChange() {
@@ -817,12 +786,12 @@
             grid: { padding: { top: -10, bottom: -20, left: 0, right: 0 } },
             plotOptions: {
                 radialBar: {
-                    startAngle: -90, endAngle: 90, offsetY: 0,
+                    startAngle: -90, endAngle: 90, offsetY: 40,
                     hollow: { size: '65%' },
                     track: { background: "#e7e7e7", strokeWidth: '100%', margin: 0 },
                     dataLabels: {
-                        name: { show: true, fontSize: '12px', color: '#6c757d', offsetY: -10 },
-                        value: { offsetY: -20, fontSize: '24px', fontWeight: 'bold', color: '#111', formatter: function () { return "669.8 kg/hr"; } }
+                        name: { show: true, fontSize: '12px', color: '#6c757d', offsetY: 25 },
+                        value: { offsetY: -10, fontSize: '24px', fontWeight: 'bold', color: '#111', formatter: function () { return "669.8 kg/hr"; } }
                     }
                 }
             },
@@ -852,7 +821,10 @@
         // ==========================================
         var isD2Rendered = false;
         function renderDashboard2Charts() {
-            if (!dt3) dt3 = new DataTable("#table-time-breakdown", dtOptions);
+            if (!dt3) {
+                $('#table-time-breakdown').addClass('table-sm align-middle');
+                dt3 = $('#table-time-breakdown').DataTable(dtOptions);
+            }
             if (isD2Rendered) return;
 
             setTimeout(function () {
@@ -876,7 +848,7 @@
                     series: [522, 98.5, 36, 24],
                     chart: { height: '100%', type: 'donut' },
                     labels: ['Uptime', 'Planned DT', 'Unplanned DT', 'Idle'],
-                    colors: ['#2fb344', '#f59e0b', '#d63939', '#6f42c1'],
+                    colors: ['#0ba360', '#667eea', '#b224ef', '#4facfe'],
                     legend: { position: 'bottom', fontSize: '10px' },
                     dataLabels: {
                         enabled: true,
@@ -897,6 +869,42 @@
                 isD2Rendered = true;
             }, 100);
         }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+    <style>
+    /* Compact DataTables styling */
+    .dataTables_wrapper { font-size: 0.8rem; }
+    .dataTables_wrapper .form-control-sm { font-size: 0.8rem; padding: 0.25rem 0.5rem; }
+    .dataTables_wrapper .form-select-sm { font-size: 0.8rem; padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 1.6rem; }
+    .dataTables_wrapper .page-link { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+    table.dataTable.table-sm > thead > tr > th { padding-right: 20px; }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('#table-volume-breakdown, #table-tonality-perf').addClass('table-sm align-middle');
+            
+            $('#table-volume-breakdown').DataTable($.extend({}, dtOptions, {
+                drawCallback: function(settings) {
+                    var api = this.api();
+                    api.rows({page: 'current'}).every(function () {
+                        var cell = $(this.node()).find('td').eq(4);
+                        if (cell.length) {
+                            var valText = cell.text().trim();
+                            if (valText.startsWith('-')) {
+                                cell.removeClass('text-positive text-neutral').addClass('text-negative');
+                            } else if (valText.startsWith('+') || (parseFloat(valText.replace(/,/g, '')) > 0)) {
+                                cell.removeClass('text-negative text-neutral').addClass('text-positive');
+                            } else {
+                                cell.removeClass('text-positive text-negative').addClass('text-neutral');
+                            }
+                        }
+                    });
+                }
+            }));
+
+            $('#table-tonality-perf').DataTable(dtOptions);
+        });
     </script>
 </body>
 
